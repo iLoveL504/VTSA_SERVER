@@ -16,20 +16,12 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(logDate)
 
-app.use(
-    (req, res) => {
-        console.log(process.env)
-    }
-)
 
-app.put('/', (req, res) => {
-    console.log('User login')
+app.use('/test', (req, res) => {
+    console.log('connection test')
     res.end()
 }) 
-app.delete('/', (req, res) => {
-    console.log('User delete')
-    res.end()
-}) 
+
 
 app.use('/employees', employeeRouter)
 app.use('/auth', authRouter)
