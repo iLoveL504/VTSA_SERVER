@@ -6,11 +6,14 @@ export const handleLogin = async (req, res) => {
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password required' })
     const results = await users.getAllUsers()
     const foundUser = results.find(users => users.username === user)
-    console.log(foundUser)
-    console.log(pwd)
-    if (!foundUser) return res.status(404).json({ 'message': 'User not found' })
-    if (foundUser.password !== pwd) return res.status(401).json({ 'message': 'Unauthorized'})
-    
+    if (!foundUser){
+        console.log('wala')
+        return res.status(404).json({ 'message': 'User not found' })
+    } 
+    if (foundUser.password !== pwd) {
+        console.log('mali password')
+        return res.status(401).json({ 'message': 'Unauthorized'})
+    }
    
 
     if (foundUser) {
@@ -33,7 +36,7 @@ export const handleLogin = async (req, res) => {
         //Saving refreshToken with current user (mysql code)
 
         res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
-        res.json({ accessToken, roles })
+        res.json({ accessToken })
         console.log('user has login')
     }
     // try{

@@ -7,6 +7,7 @@ import corsOptions from './config/corsOptions.js'
 import { router as employeeRouter } from './routes/api/employees.js'
 import { router as authRouter } from './routes/auth.js'
 import { router as projectRouter } from './routes/api/projects.js'  
+import { router as teamsRouter } from './routes/api/teams.js'
 
 const app = express()
     
@@ -26,5 +27,6 @@ app.use('/test', (req, res) => {
 app.use('/employees', employeeRouter)
 app.use('/auth', authRouter)
 app.use('/projects', projectRouter)
+app.use('/teams', teamsRouter)
 
 app.listen(URL, console.log(`Server running on port ${URL}`))

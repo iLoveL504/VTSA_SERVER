@@ -12,7 +12,6 @@ const pool = mysql.createPool({
     }) 
 
 
-
 export { pool }
 
 
