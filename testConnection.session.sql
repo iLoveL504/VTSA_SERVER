@@ -9,6 +9,4 @@
 -- FROM employees e
 -- JOIN teams t ON t.emp_id = e.employee_id
 
-
-
-SELECT * from projects
+alter table projects add column manufacturing_end_date date;

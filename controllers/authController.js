@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { UserModel as users } from '../model/UserModel.js'
+import { pool } from '../config/database.js'
 
 export const handleLogin = async (req, res) => {
     const { user, pwd } = req.body
@@ -22,7 +23,8 @@ export const handleLogin = async (req, res) => {
             {
                 "UserInfo": {
                     "username": foundUser.username,
-                    "roles": roles
+                    "roles": roles,
+                    "id": foundUser.employee_id
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
@@ -35,23 +37,22 @@ export const handleLogin = async (req, res) => {
         )
         //Saving refreshToken with current user (mysql code)
 
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
-        res.json({ accessToken })
-        console.log('user has login')
+        try{
+            await pool.query(`update employees set refresh_token = :refreshToken where employee_id
+                = :id`,
+                {
+                    refreshToken: refreshToken,
+                    id: foundUser.employee_id
+                }
+            )
+            res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
+            res.json({ accessToken })
+            console.log('user has login')
+        } catch (e) {
+        
+        }
     }
-    // try{
-    // const [ results, fields ] = await pool.query(
-    //     'SELECT * FROM employees'
-    // )
-    
-    // res.json(results)
-    // console.log(req)
-    // } catch (err) {
-    //     console.log(err)
-    // }
 }
-
-
 
 
 

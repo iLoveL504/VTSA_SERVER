@@ -16,6 +16,22 @@ class UserModel {
        
         return results
     }
+
+    static async updateUser(user){
+        const {
+            last_name,
+            first_name,
+            employee_id
+        } = user
+        const [ results ] = await pool.query(
+            `update employees set last_name = :last_name, first_name = :first_name where employee_id = :employee_id`,
+            {
+                employee_id: employee_id,
+                last_name: last_name,
+                first_name: first_name
+            }
+        )
+    }
 }
 
 export { UserModel }

@@ -1,5 +1,5 @@
 import express from 'express'
-import { getProjects, findProject, createProject } from "../../controllers/projectController.js"
+import { getProjects, findProject, createProject, updateProject } from "../../controllers/projectController.js"
 const router = express.Router()
 
 router.route('/')
@@ -8,7 +8,7 @@ router.route('/')
 
 router.route('/:id')
     .get(findProject)
-
+    .put(updateProject)
 
 
 export { router }
