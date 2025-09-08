@@ -161,6 +161,13 @@ class ProjectModel {
         );
         `, {id: id, dates: dates})
     }
+
+    static async getProjectSchedule(id) {
+        const [ results ] = await pool.query(`
+                select * from elevator_project_schedule where project_id = :id
+            `, {id : id})
+        return results
+    }
 }
 
 export { ProjectModel }

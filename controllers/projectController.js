@@ -42,4 +42,18 @@ export const makeProjectSchedule = async (req, res) => {
         console.error("Error making project schedule:", e);
         res.status(500).json({ message: "Internal Server Error" });        
     }
+
+}
+
+export const getProjectSchedule = async (req, res) => {
+    const { id } = req.params
+    try {
+        const results = await projects.getProjectSchedule(Number(id))
+         if (results.length === 0) return res.status(404).json({"message": "not found"})
+            console.log(results)
+        res.json(results)
+    } catch (e) {
+        console.error("Error making project schedule:", e);
+        res.status(500).json({ message: "Internal Server Error" });        
+    }
 }
