@@ -35,6 +35,7 @@ export const getTeamDesignation = async (req, res) => {
 
 export const forecastTeam = async (req, res) => {
     try {
+        console.log('hi')
         const { manufacturing_end_date } = req.body;
         console.log(manufacturing_end_date)
         const results = await teams.forecastTeam(manufacturing_end_date)
@@ -45,9 +46,9 @@ export const forecastTeam = async (req, res) => {
     }
 }
 
-export const getEmployeesWithNoTeam = async (req, res) => {
+export const getTeamsWithNoProject = async (req, res) => {
     try {
-        const results = await teams.getEmployeesWithNoTeam()
+        const results = await teams.getTeamsWithNoProject()
         console.log('hi')
         res.status(200).json(results)
     } catch (error) {

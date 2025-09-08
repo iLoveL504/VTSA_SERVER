@@ -9,7 +9,7 @@ import { router as authRouter } from './routes/auth.js'
 import { router as projectRouter } from './routes/api/projects.js'  
 import { router as teamsRouter } from './routes/api/teams.js'
 import { router as notificationsRouter } from './routes/api/notifications.js'
-import { getEmployeesWithNoTeam } from './controllers/teamsController.js'
+
 
 const app = express()
     
@@ -20,8 +20,7 @@ app.use(express.json())
 app.use(logDate)
 
 
-app.use('/test', getEmployeesWithNoTeam) 
-
+app.use('/test', (req,res) => {console.log(req.body)})
 
 app.use('/employees', employeeRouter)
 app.use('/auth', authRouter)

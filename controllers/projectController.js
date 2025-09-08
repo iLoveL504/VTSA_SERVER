@@ -11,7 +11,6 @@ export const findProject = async (req, res) => {
 }
 
 export const createProject = async (req, res) => {
-    console.log(req.body)
     await projects.createProject(req.body)
     console.log('project created')
     const results = await projects.getAllProjects()
@@ -19,10 +18,8 @@ export const createProject = async (req, res) => {
 }
 export const updateProject = async (req, res) => {
     try{
-        console.log(req.body)
         const results = await projects.updateProjects(req.body)
         if (results.length === 0) return res.status(404).json({"message": "not found"})
-        console.log(req.body)
         res.json({"message": "found"})
     } catch (e) {
         console.error("Error updating project:", e);
@@ -35,3 +32,14 @@ const deleteProject = async (req, res) => {
 
 }
 
+export const makeProjectSchedule = async (req, res) => {
+    const { id } = req.params
+    try{
+        console.log(id)
+        console.log(req.body.date.length)
+        projects.makeProjectSchedule(Number(id), req.body.date)
+    } catch (e) {
+        console.error("Error making project schedule:", e);
+        res.status(500).json({ message: "Internal Server Error" });        
+    }
+}
