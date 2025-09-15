@@ -57,3 +57,16 @@ export const getProjectSchedule = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });        
     }
 }
+export const completeTask = async (req, res) => {
+    const { id } = req.params
+    console.log(id)
+    const { task } = req.body
+    console.log(task)
+    try {
+        const results = await projects.completeTask(task, Number(id))
+        res.json(results)
+    } catch (e) {
+        console.error("Error updating project task:", e);
+        res.status(500).json({ message: "Internal Server Error" });        
+    }
+}

@@ -3,19 +3,20 @@ import { pool } from '../config/database.js'
 class NotificationModel {
     static async getAllNotifications() {
         const [ results ] = await pool.query(`
-                select n.subject, n.body, e.username
+                select n.notification_id, n.subject, n.body, e.username
                 from notification n
                 join notification_recipients nr
                 on n.notification_id = nr.notification_id
                 join employees e
                 on nr.employee_id = e.employee_id
             `)
+            console.log(results)
             return results
     }
 
     static async getNotificationsById(id) {
         const [ results ] = await pool.query(`
-                select n.subject, n.body, e.username
+                select n.notification_id, n.subject, n.body, e.username
                 from notification n
                 join notification_recipients nr
                 on n.notification_id = nr.notification_id

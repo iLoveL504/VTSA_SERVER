@@ -9,7 +9,8 @@ import { router as authRouter } from './routes/auth.js'
 import { router as projectRouter } from './routes/api/projects.js'  
 import { router as teamsRouter } from './routes/api/teams.js'
 import { router as notificationsRouter } from './routes/api/notifications.js'
-
+import { router as messagesRouter } from './routes/api/messages.js'
+import { pool } from './config/database.js'
 
 const app = express()
     
@@ -19,13 +20,15 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(logDate)
 
-
-app.use('/test', (req,res) => {console.log(req.body)})
+// app.use('/test', (req, res) => {
+//     console.log(test())
+// })
 
 app.use('/employees', employeeRouter)
 app.use('/auth', authRouter)
 app.use('/projects', projectRouter)
 app.use('/teams', teamsRouter)
 app.use('/notifications', notificationsRouter)
+app.use('/messages', messagesRouter)
 
 app.listen(URL, console.log(`Server running on port ${URL}`))
