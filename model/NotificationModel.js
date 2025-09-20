@@ -1,4 +1,6 @@
 import { pool } from '../config/database.js'
+import { io } from '../server.js'
+
 
 class NotificationModel {
     static async getAllNotifications() {
@@ -30,19 +32,29 @@ class NotificationModel {
     static async newNotification(notification){
         await pool.query(`
                 insert notification (subject, body) values (:subject, :body)
-            `, {subject: notification.subject, body: notification.body})
-
+            `, {subject: notification.subject, body: notification.body}) 
+         console.log('-----------------------------this is create-----------------------------------')
+        const [ latestId ] = await pool.query('SELECT notification_id FROM notification ORDER BY notification_id DESC LIMIT 1;')
+        const [ latestNotification ] = await pool.query('SELECT * FROM notification ORDER BY notification_id DESC LIMIT 1;')
+        await this.distributeNotification(latestId, latestNotification)
     }
 
-    static async distributeNotification(){
+    static async distributeNotification(latestId, latestNotification){
+        console.log('-----------------------------this is distribute-----------------------------------')
+        console.log(latestId)
         const [ id_results ] = await pool.query('select employee_id from employees where job = \'Project Engineer\'')
-        const [ latest_notification ] = await pool.query('SELECT notification_id FROM notification ORDER BY notification_id DESC LIMIT 1')
-        console.log(latest_notification)
         for(const result of id_results){
             await pool.query(`
                 insert into notification_recipients (notification_id, employee_id) 
                 values (:notification_id, :employee_id)
-            `, {notification_id: latest_notification[0].notification_id, employee_id: result.employee_id})
+            `, {notification_id: latestId[0].notification_id, employee_id: result.employee_id})
+
+            console.log('--------------------notifications-----------------------')
+            console.log(latestNotification)
+            // distribute real-time notifications to select employees
+            io.to(`notifications_${result.employee_id}`).emit('new_notification', 
+                latestNotification[0]
+            )
         }
 
         

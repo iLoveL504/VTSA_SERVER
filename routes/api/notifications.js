@@ -14,7 +14,5 @@ router.route('/')
 router.route('/:id')
     .get(getNotificationsById)
 
-router.route('/distribute')
-    .post(distributeNotification)
 
 export { router }

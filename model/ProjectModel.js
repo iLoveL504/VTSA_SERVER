@@ -14,7 +14,6 @@ class ProjectModel {
         const [ results ] = await pool.query(
             'SELECT * FROM projects'
         )
-        console.log("Connected to DB:", process.env.MYSQL_DATABASE);
 
         return results
     }
